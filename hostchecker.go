@@ -54,7 +54,7 @@ func (r *Resolvers) Create(resolverAddress string) {
 		PreferGo: true,
 		Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
 			d := net.Dialer{
-				Timeout: time.Millisecond * time.Duration(10000),
+				Timeout: time.Millisecond * time.Duration(30000),
 			}
 			return d.DialContext(ctx, network, resolverAddress)
 		},
@@ -110,12 +110,22 @@ func (hc *HostChecker) isValid(url string) bool {
 
 func (hc *HostChecker) Start() {
 
-	work := make(chan string, 1024)
-	close := make(chan bool)
+	work := make(chan string)
+	stop := make(chan bool, hc.maxThreads)
 	wg := &sync.WaitGroup{}
 
 	// Start go routines
-
+	wg.Add(1)
+	go func() {
+		for _, url := range hc.hosts {
+			work <- url
+		}
+		for range hc.maxThreads {
+			stop <- true
+		}
+		wg.Done()
+	}()
+	log.Println("Starting workers")
 	for i := 0; i < hc.maxThreads; i++ {
 		wg.Add(1)
 		go func() {
@@ -131,19 +141,13 @@ func (hc *HostChecker) Start() {
 						hc.invalid = append(hc.invalid, url)
 						hc.minvalid.Unlock()
 					}
-				case <-close:
+				case <-stop:
 					wg.Done()
 					return
 				}
 			}
-
 		}()
 	}
-	// Feed threads with work to do
-	for _, url := range hc.hosts {
-		work <- url
-	}
-	close <- true
 	wg.Wait()
 }
 
