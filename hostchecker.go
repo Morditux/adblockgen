@@ -28,6 +28,7 @@ func isValid(url string) bool {
 			}
 			if dnsErr.IsTemporary {
 				log.Printf("%s dns temporary error, removing\n", url)
+				return false
 			}
 			if dnsErr.IsNotFound {
 				log.Printf("%s not found, removing\n", url)
