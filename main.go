@@ -15,6 +15,7 @@ var destinationPath = flag.String("d", "", "destination path")
 var checkValidHosts = flag.Bool("c", false, "save only valid hosts")
 var destinationIP = flag.String("dip", "0.0.0.0", "destination ip")
 var invalidFile = flag.String("i", "", "invalid file")
+var maxThreads = flag.Int("t", 10, "max threads")
 
 type StringWriter struct {
 	buffer []string
@@ -185,7 +186,7 @@ func main() {
 	downloader.Run()
 	hosts := downloader.GetHosts()
 	if validOnly {
-		hc := NewHostChecker(hosts, 25)
+		hc := NewHostChecker(hosts, *maxThreads)
 		hc.Start()
 		hosts = hc.Valids()
 		invalids := hc.Invalids()

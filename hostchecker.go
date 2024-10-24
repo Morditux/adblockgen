@@ -147,41 +147,6 @@ func (hc *HostChecker) Start() {
 	wg.Wait()
 }
 
-/*
-	func (hc *HostChecker) Start() {
-		wg := new(sync.WaitGroup)
-		pos := 0
-		for {
-			if pos >= len(hc.hosts) {
-				break
-			}
-			bucket := make([]string, 0)
-			for counter := 0; counter < hc.bucketSize; counter++ {
-				bucket = append(bucket, hc.hosts[pos])
-				pos++
-				if pos >= len(hc.hosts) {
-					break
-				}
-			}
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				for i := 0; i < len(bucket); i++ {
-					if hc.isValid(bucket[i]) {
-						hc.mvalid.Lock()
-						hc.valid = append(hc.valid, bucket[i])
-						hc.mvalid.Unlock()
-					} else {
-						hc.minvalid.Lock()
-						hc.invalid = append(hc.invalid, bucket[i])
-						hc.minvalid.Unlock()
-					}
-				}
-			}()
-		}
-		wg.Wait()
-	}
-*/
 func (hc *HostChecker) Valids() []string {
 	hc.mvalid.Lock()
 	defer hc.mvalid.Unlock()
