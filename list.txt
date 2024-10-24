@@ -1,0 +1,13 @@
+https://adaway.org/hosts.txt
+https://someonewhocares.org/hosts/hosts
+https://winhelp2002.mvps.org/hosts.txt
+https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext
+https://hostfiles.frogeye.fr/firstparty-only-trackers-hosts.txt
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt
+https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt
+https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt
+https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt
+https://blocklistproject.github.io/Lists/phishing.txt
+https://blocklistproject.github.io/Lists/ransomware.txt
+https://dl.red.flag.domains/red.flag.domains.txt
