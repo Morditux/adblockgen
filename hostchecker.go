@@ -112,9 +112,12 @@ func (hc *HostChecker) Start() {
 
 	work := make(chan string, 1024)
 	close := make(chan bool)
+	wg := &sync.WaitGroup{}
 
 	// Start go routines
+
 	for i := 0; i < hc.maxThreads; i++ {
+		wg.Add(1)
 		go func() {
 			for {
 				select {
@@ -129,6 +132,7 @@ func (hc *HostChecker) Start() {
 						hc.minvalid.Unlock()
 					}
 				case <-close:
+					wg.Done()
 					return
 				}
 			}
@@ -140,6 +144,7 @@ func (hc *HostChecker) Start() {
 		work <- url
 	}
 	close <- true
+	wg.Wait()
 }
 
 /*
