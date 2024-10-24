@@ -185,7 +185,7 @@ func main() {
 	downloader.Run()
 	hosts := downloader.GetHosts()
 	if validOnly {
-		hc := NewHostChecker(hosts, 500)
+		hc := NewHostChecker(hosts, 25)
 		hc.Start()
 		hosts = hc.Valids()
 		invalids := hc.Invalids()
